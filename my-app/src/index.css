@@ -18,22 +18,23 @@ ol, ul {
 }
 
 .square {
-  background: #fff;
-  border: 1px solid #999;
+  background: rgb(22, 195, 238);
+  border: 1px solid rgb(255, 255, 255);
   float: left;
-  font-size: 24px;
+  font-size: 48px;
   font-weight: bold;
-  line-height: 34px;
-  height: 34px;
+  line-height: 68px;
+  height: 68px;
   margin-right: -1px;
   margin-top: -1px;
   padding: 0;
   text-align: center;
-  width: 34px;
+  width: 68px;
+  color: white;
 }
 
 .square:focus {
-  outline: none;
+  color: blue;
 }
 
 .kbd-navigation .square:focus {

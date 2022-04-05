@@ -20,9 +20,12 @@ class Board extends React.Component {
 
     />;
   }
+  
 
   render() {
     return (
+      
+
       <div>
         <div className="board-row">
           {this.renderSquare(0)}
@@ -48,24 +51,33 @@ class Game extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      history: [{
+      historySquares: [{
         squares: Array(0).fill(null),
       }],
       stepNumber:0,
       xIsNext: true,
+      historyCol: [],
+      historyRow: [],
     }
   }
   handleClick(i){
-    const history = this.state.history.slice(0, this.state.stepNumber+1);
-    const current = history[history.length-1];
+    const historySquares = this.state.historySquares.slice(0, this.state.stepNumber+1);
+    const current = historySquares[historySquares.length-1];
     const squares = current.squares.slice();
+    const hisCol = this.state.historyCol.slice(0, this.state.stepNumber);
+    const hisRow = this.state.historyRow.slice(0, this.state.stepNumber);
+    const curCol = i%3;
+    const curRow = Math.floor(i/3);
+    // console.log("column: " + col + "row: " + row );
     if(calculateWinner(squares) || squares[i]){
       return;
     }
     squares[i] = this.state.xIsNext?'X':'O';
     this.setState({
-      history: history.concat([{squares: squares, }]),
-      stepNumber: history.length,
+      historySquares: historySquares.concat([{squares: squares, }]),
+      historyCol: hisCol.concat(curCol),
+      historyRow: hisRow.concat(curRow),
+      stepNumber: historySquares.length,
       xIsNext: !this.state.xIsNext,
     }); 
   }
@@ -77,16 +89,22 @@ class Game extends React.Component {
     })
   }
   render() {
-    const history = this.state.history;
-    const current = history[this.state.stepNumber];
+    const historySquares = this.state.historySquares;
+    const current = historySquares[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
-    
-    const moves = history.map((step, move) => {
+    // console.log("col: " + this.state.historyCol);
+    // console.log("row: " + this.state.historyRow);
+    // const col = this.state.col[this.state.stepNumber];
+    // const row = this.state.row[this.state.stepNumber];
+    const moves = historySquares.map((step, move) => {
       const desc = move ? 'Go to move #' + move: 'Go to game start';
+ 
       return (
         <li key={move}>
           <button onClick = {()=> this.jumpTo(move)}>{desc}</button>
+          {<h3>Location: ({this.state.historyCol[move]},{this.state.historyRow[move]})</h3> }
         </li>
+        
       );
     });
     
